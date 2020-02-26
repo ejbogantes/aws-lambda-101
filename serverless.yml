@@ -1,0 +1,21 @@
+service:
+  name: ${opt:name, file(./config.yml):SERVICE_NAME, 'aws-lambda-101'}
+plugins:
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, file(./config.yml):STAGE, 'dev'}
+  region: ${opt:region, file(./config.yml):REGION, 'us-east-1'}
+  memorySize: 1024
+
+functions:
+  test:
+    handler: index.handler
+    events:
+      - http:
+          method: post
+          path: test
+          resp: json
+          cors: true
